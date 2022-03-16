@@ -18,4 +18,5 @@
 
 ### Backend setup
 
-* Build with gradle and run the jar with java -jar helloworld.jar command
+* Build with gradle
+* Run with java
