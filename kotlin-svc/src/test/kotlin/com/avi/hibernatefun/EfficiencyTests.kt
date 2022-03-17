@@ -12,16 +12,18 @@ import javax.sql.DataSource
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class DatabaseTests(
+class EfficiencyTests(
   @Autowired val bookJpaRepository: BookJpaRepository,
   @Autowired val dataSource: DataSource,
 ) {
 
-  init {
-    ResourceDatabasePopulator().apply {
-      addScript(ClassPathResource("/sql/initDbForTests.sql"))
-      execute(dataSource)
-    }
+  @BeforeAll
+  fun initDb() {
+    ResourceDatabasePopulator()
+      .apply {
+        addScript(ClassPathResource("/sql/initDbDataForTests.sql"))
+        execute(dataSource)
+      }
   }
 
   @Test
