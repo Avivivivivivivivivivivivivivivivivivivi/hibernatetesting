@@ -1,16 +1,23 @@
 package com.avi.hibernatefun.entity
 
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.ManyToMany
+import javax.persistence.SequenceGenerator
+import javax.persistence.Table
 
 @Entity
-@Table(name = "Book")
+@Table(name = "book")
 class BookEntity(
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "book_generator")
   @SequenceGenerator(name = "book_generator", sequenceName = "book_seq")
-  val id: Long? = null,
+  var id: Long? = null,
 
-  val title: String,
+  var title: String,
 
   @ManyToMany(
     mappedBy = "books",

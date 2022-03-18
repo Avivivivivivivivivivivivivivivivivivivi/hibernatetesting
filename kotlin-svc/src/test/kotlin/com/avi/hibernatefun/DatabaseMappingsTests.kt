@@ -1,7 +1,9 @@
 package com.avi.hibernatefun
 
 import com.avi.hibernatefun.entity.AuthorEntity
+import com.avi.hibernatefun.entity.BookEntity
 import com.avi.hibernatefun.repository.AuthorJpaRepository
+import com.avi.hibernatefun.repository.BookJpaRepository
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -10,7 +12,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.core.io.ClassPathResource
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator
 import org.springframework.transaction.annotation.Transactional
-import javax.persistence.EntityManager
 import javax.sql.DataSource
 
 
@@ -18,8 +19,8 @@ import javax.sql.DataSource
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class DatabaseMappingsTests(
   @Autowired val authorJpaRepository: AuthorJpaRepository,
+  @Autowired val bookJpaRepository: BookJpaRepository,
   @Autowired val dataSource: DataSource,
-  @Autowired val entityManager: EntityManager,
 ) {
 
   @BeforeAll
@@ -34,13 +35,11 @@ class DatabaseMappingsTests(
 
     for (i: Long in 1L..50L) {
       val authorEntity = AuthorEntity(name = "name${i}", lastName = "lastName${i}")
-//      authorEntity.addBook(BookEntity(title = "title${i}"))
-//      authorEntity.addBook(BookEntity(title = "title${1000 + i}"))
-//      authorEntity.books =
-//        mutableSetOf(
-//          BookEntity(title = "title${i}"),
-//          BookEntity(title = "title${1000 + i}")
-//        )
+      authorEntity.books =
+        mutableSetOf(
+          BookEntity(title = "title${i}"),
+          BookEntity(title = "title${1000 + i}")
+        )
       authors.add(authorEntity)
     }
 
@@ -51,6 +50,7 @@ class DatabaseMappingsTests(
   @Transactional
   fun `test fetching queries for authors with books`() {
     val findAll = authorJpaRepository.findAll()
+    val finAllBooks = bookJpaRepository.findAll()
 
     val findAllEager = authorJpaRepository.findAllEager()
     findAllEager.forEach { author ->

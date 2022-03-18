@@ -1,6 +1,19 @@
 package com.avi.hibernatefun.entity
 
-import javax.persistence.*
+import javax.persistence.CascadeType
+import javax.persistence.Column
+import javax.persistence.Entity
+import javax.persistence.FetchType
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.JoinTable
+import javax.persistence.ManyToMany
+import javax.persistence.NamedAttributeNode
+import javax.persistence.NamedEntityGraph
+import javax.persistence.SequenceGenerator
+import javax.persistence.Table
 
 
 @NamedEntityGraph(
@@ -8,17 +21,17 @@ import javax.persistence.*
   attributeNodes = [NamedAttributeNode("books")],
 )
 @Entity
-@Table(name = "Author")
+@Table(name = "author")
 class AuthorEntity(
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_generator")
   @SequenceGenerator(name = "author_generator", sequenceName = "author_seq")
-  val id: Long? = null,
+  var id: Long? = null,
 
   @Column(name = "author_name")
-  val name: String,
+  var name: String,
 
-  val lastName: String,
+  var lastName: String,
 
   @ManyToMany(
     cascade = [
